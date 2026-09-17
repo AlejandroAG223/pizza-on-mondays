@@ -24,6 +24,22 @@ SECTORS = {
     },
 }
 
+SECTOR_ICONS = {
+    "Oil & Gas": "🛢️",
+    "Real Estate": "🏢",
+    "Mining": "⛏️",
+}
+
+TITLE_COLOR = "#87CEFA"  # azul claro
+
+
+def colored_title(text: str) -> None:
+    st.markdown(f"<h1 style='color:{TITLE_COLOR}'>{text}</h1>", unsafe_allow_html=True)
+
+
+def colored_subheader(text: str) -> None:
+    st.markdown(f"<h3 style='color:{TITLE_COLOR}'>{text}</h3>", unsafe_allow_html=True)
+
 
 @st.cache_data
 def load_returns(tickers: list[str], start: str, end: str) -> pd.DataFrame:
@@ -35,10 +51,16 @@ def load_returns(tickers: list[str], start: str, end: str) -> pd.DataFrame:
 
 def main() -> None:
     st.set_page_config(page_title="Pizza on Mondays", layout="wide")
-    st.title("Pizza on Mondays")
+    colored_title("🍕 Pizza on Mondays")
 
-    sector_name = st.selectbox("Sector", list(SECTORS.keys()))
+    sector_name = st.selectbox(
+        "Sector",
+        list(SECTORS.keys()),
+        format_func=lambda name: f"{SECTOR_ICONS.get(name, '')} {name}",
+    )
     sector = SECTORS[sector_name]
+
+    colored_subheader(f"{SECTOR_ICONS.get(sector_name, '')} {sector_name}")
 
     col1, col2 = st.columns(2)
     start = col1.date_input(
@@ -50,19 +72,19 @@ def main() -> None:
 
     returns = load_returns(sector["stocks"], str(start), str(end))
 
-    st.subheader("Retornos diarios")
+    colored_subheader("Retornos diarios")
     st.dataframe(returns)
 
-    st.subheader("Estadísticas")
+    colored_subheader("Estadísticas")
     st.dataframe(returns.describe())
 
-    st.subheader("Retornos acumulados")
+    colored_subheader("Retornos acumulados")
     st.line_chart((1 + returns).cumprod())
 
-    st.subheader("Volatilidad (rolling 21 días, anualizada)")
+    colored_subheader("Volatilidad (rolling 21 días, anualizada)")
     st.line_chart(returns.rolling(21).std() * (252 ** 0.5))
 
-    st.subheader("Dispersión entre activos")
+    colored_subheader("Dispersión entre activos")
     tickers = st.multiselect(
         "Tickers a comparar",
         options=list(returns.columns),
