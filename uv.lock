@@ -1844,7 +1844,7 @@ wheels = [
 
 [[package]]
 name = "pizza-on-mondays"
-version = "0.1.0"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "prefect" },
