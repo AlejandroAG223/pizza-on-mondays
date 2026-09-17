@@ -17,6 +17,11 @@ SECTORS = {
         "start": "2026-01-01",
         "end": "2026-12-31",
     },
+    "Criptomonedas": {
+        "stocks": ["BTC-USD", "DOGE-USD", "ZEC-USD"],
+        "start": "2020-01-01",
+        "end": "2026-12-31",
+    },
 }
 
 
