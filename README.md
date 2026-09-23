@@ -1,16 +1,31 @@
-# 🍕 Pizza on Mondays
+<p align="center">
+  <a href="https://pizzaonmondays.streamlit.app/"><img src="https://static.streamlit.io/badges/streamlit_badge_black_white.svg" alt="Open in Streamlit"></a>
+</p>
+<p align="center">
+  <em>🍕 Pizza on Mondays — dashboard de retornos, riesgo y simulación de cartera por sector</em>
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.12%2B-blue" alt="Python 3.12+">
+  <img src="https://img.shields.io/badge/streamlit-1.63%2B-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit">
+</p>
 
-Dashboard interactivo en Streamlit para explorar el comportamiento histórico de distintos sectores (Oil & Gas, Real Estate, Criptomonedas) y simular una cartera simple sobre ellos.
+---
 
-**App en vivo:** https://pizzaonmondays.streamlit.app/
+**App en vivo**: [https://pizzaonmondays.streamlit.app/](https://pizzaonmondays.streamlit.app/)
 
-## ¿Qué hace?
+**Código fuente**: [https://github.com/claseudem/pizza-on-mondays](https://github.com/claseudem/pizza-on-mondays)
 
-- Descarga precios históricos por sector con [yfinance](https://github.com/ranaroussi/yfinance).
-- Calcula retornos diarios, retornos acumulados y volatilidad rolling.
-- Muestra un resumen por activo (retorno total/anualizado, volatilidad, Sharpe aproximado, máximo drawdown, momentum reciente) y una recomendación descriptiva a partir de esas métricas.
-- Simula la evolución de un capital inicial invertido en cada activo y en una cartera ponderada.
-- Permite comparar la dispersión entre activos seleccionados.
+---
+
+**Pizza on Mondays** es un dashboard interactivo en Streamlit para explorar el comportamiento histórico de distintos sectores (Oil & Gas, Real Estate, Criptomonedas) y simular una cartera simple sobre ellos, sin salir del navegador.
+
+Lo principal:
+
+- **Multi-sector**: cambiá entre Oil & Gas 🛢️, Real Estate 🏢 y Criptomonedas desde un mismo selector.
+- **Resumen accionable**: retorno total/anualizado, volatilidad, Sharpe aproximado, máximo drawdown y momentum, ordenados de mejor a peor.
+- **Recomendación automática**: una lectura en texto plano de esas métricas, generada en cada corrida.
+- **Simulación de payoff**: proyectá un capital inicial sobre cada activo y sobre una cartera equiponderada.
+- **Datos en vivo**: precios descargados de Yahoo Finance vía [yfinance](https://github.com/ranaroussi/yfinance), sin datasets estáticos.
 
 > ⚠️ Todo lo que muestra la app es una lectura descriptiva de datos históricos, no asesoramiento financiero.
 
@@ -102,6 +117,12 @@ if len(tickers) >= 2:
 ```
 
 **En la app:** un selector múltiple de tickers y, al elegir dos o más, una matriz de gráficos de dispersión (pairplot de seaborn) mostrando cómo se relacionan los retornos diarios entre esos activos.
+
+## Rendimiento
+
+La descarga de precios (`load_returns`) es lo más costoso de cada corrida, porque depende de la API de Yahoo Finance. Por eso está detrás de `@st.cache_data`: Streamlit cachea el resultado por combinación de `(tickers, start, end)`, así que cambiar un selector que no afecta esos parámetros (por ejemplo, el capital inicial o los tickers a comparar en la dispersión) **no vuelve a descargar nada** — solo recalcula sobre los datos ya cacheados.
+
+En la práctica esto significa que la primera carga de un sector/rango de fechas tarda lo que tarde yfinance en responder, pero cualquier interacción posterior dentro de ese mismo sector y rango es prácticamente instantánea.
 
 ## Cómo correrlo localmente
 
