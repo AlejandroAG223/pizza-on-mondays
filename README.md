@@ -11,6 +11,7 @@ Dashboard interactivo en Streamlit para explorar el comportamiento histórico de
 - Muestra un resumen por activo (retorno total/anualizado, volatilidad, Sharpe aproximado, máximo drawdown, momentum reciente) y una recomendación descriptiva a partir de esas métricas.
 - Simula la evolución de un capital inicial invertido en cada activo y en una cartera ponderada.
 - Permite comparar la dispersión entre activos seleccionados.
+- **Descriptor de empresas** (página aparte): ingresando un ticker, arma una descripción de la empresa a partir de sus fundamentals (perfil, valoración, rentabilidad, deuda, dividendos y estados financieros).
 
 > ⚠️ Todo lo que muestra la app es una lectura descriptiva de datos históricos, no asesoramiento financiero.
 
@@ -28,7 +29,10 @@ uv run streamlit run src/pizza_on_mondays/app.py
 ```
 src/pizza_on_mondays/
 ├── __init__.py
-└── app.py          # app de Streamlit (lógica y UI)
+├── app.py          # entrypoint de Streamlit: página de Sectores
+├── ui.py           # helpers de estilo compartidos entre páginas
+└── pages/
+    └── 1_🔎_Descriptor_de_empresas.py   # ficha de una empresa con fundamentals de yfinance
 notebooks/
 └── ideas.ipynb      # exploración y prototipos
 ```

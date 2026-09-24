@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 import yfinance as yf
 
-from pizza_on_mondays.ui import colored_title
+from ui import colored_title
 
 
 @st.cache_data(ttl=3600)
@@ -174,3 +174,12 @@ def render_company_descriptor() -> None:
         st.markdown(f"**Estados financieros anuales ({currency})**")
         st.bar_chart(financials[[c for c in ("Ingresos", "Utilidad neta") if c in financials]])
         st.dataframe(financials.T.style.format(lambda v: fmt_money(v, "")))
+
+
+def main() -> None:
+    st.set_page_config(page_title="Descriptor de empresas", page_icon="🔎", layout="wide")
+    render_company_descriptor()
+
+
+if __name__ == "__main__":
+    main()

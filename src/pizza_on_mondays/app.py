@@ -3,8 +3,7 @@ import seaborn as sns
 import streamlit as st
 import yfinance as yf
 
-from pizza_on_mondays.descriptor import render_company_descriptor
-from pizza_on_mondays.ui import colored_subheader, colored_title
+from ui import colored_subheader, colored_title
 
 SECTORS = {
     "Oil & Gas": {
@@ -180,14 +179,8 @@ def sectors_page() -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Pizza on Mondays", layout="wide")
-    page = st.navigation(
-        [
-            st.Page(sectors_page, title="Sectores", icon="📈", url_path="sectores", default=True),
-            st.Page(render_company_descriptor, title="Descriptor de empresas", icon="🔎", url_path="descriptor"),
-        ]
-    )
-    page.run()
+    st.set_page_config(page_title="Pizza on Mondays", page_icon="🍕", layout="wide")
+    sectors_page()
 
 
 if __name__ == "__main__":
